@@ -7,13 +7,19 @@ CURRENT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 key="$(tmux show-option -gqv "@flash-key")"
 key="${key:-j}"
 
-if [ -x "${CURRENT_DIR}/target/release/tmux-flash" ]; then
-  bin="${CURRENT_DIR}/target/release/tmux-flash"
-elif command -v tmux-flash > /dev/null; then
-  bin="$(command -v tmux-flash)"
-else
-  tmux display-message "tmux-flash: binary not found — run 'cargo build --release' in ${CURRENT_DIR}"
-  exit 0
+# Substituted with the store path when packaged via the flake's tmuxPlugin
+# output; empty means TPM install, so fall back to the lookup below.
+bin=""
+
+if [ -z "${bin}" ]; then
+  if [ -x "${CURRENT_DIR}/target/release/tmux-flash" ]; then
+    bin="${CURRENT_DIR}/target/release/tmux-flash"
+  elif command -v tmux-flash > /dev/null; then
+    bin="$(command -v tmux-flash)"
+  else
+    tmux display-message "tmux-flash: binary not found — run 'cargo build --release' in ${CURRENT_DIR}"
+    exit 0
+  fi
 fi
 
 # -b so the keybind returns while the UI runs in the swapped-in pane.
