@@ -33,6 +33,16 @@ highlighted in its own color.
 
 ## Install
 
+### TPM
+
+```tmux
+set -g @plugin 'Gigoo25/tmux-flash'
+```
+
+Binds `prefix + j` by default (change with `set -g @flash-key <key>`). The
+plugin script uses `target/release/tmux-flash` or the binary on `PATH`, so run
+`cargo build --release` in the plugin directory after install.
+
 ### Nix flake
 
 ```nix
@@ -66,6 +76,7 @@ Set as tmux user options (`set -g @flash-… value`). Colors accept `#rrggbb`,
 
 | Option | Default | Meaning |
 | --- | --- | --- |
+| `@flash-key` | `j` | prefix key the TPM script binds (TPM install only) |
 | `@flash-labels` | `asdfjklghqwertyuiopzxcvbnm` | label alphabet, in preference order |
 | `@flash-label-exclude` | _(empty)_ | characters to remove from the label alphabet |
 | `@flash-autojump` | `0` | jump immediately when only one match remains (`1`/`on`/`true`) |
