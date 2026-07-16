@@ -141,12 +141,13 @@ fn draw(
         .ok();
         if let Some(label) = &m.label {
             // Draw only the still-selectable suffix of the label so 2-char
-            // narrowing shows what to press next.
+            // narrowing shows what to press next. Drawn just past the match
+            // (flash's label.after), overlaying whatever character is there.
             let shown = label.strip_prefix(pending).unwrap_or(label);
             if !shown.is_empty() && (pending.is_empty() || label.starts_with(pending)) {
                 queue!(
                     out,
-                    MoveTo(m.col as u16, m.row as u16),
+                    MoveTo((m.col + m.len) as u16, m.row as u16),
                     SetForegroundColor(cfg.label_fg),
                     SetBackgroundColor(cfg.label_bg),
                     Print(shown),
