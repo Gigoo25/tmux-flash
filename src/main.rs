@@ -39,7 +39,7 @@ fn orchestrate() {
     let info = tmux(&[
         "display-message",
         "-p",
-        "#{pane_id}:#{pane_in_mode}:#{pane_height}:#{scroll_position}:#{window_zoomed_flag}",
+        "#{pane_id}:#{pane_in_mode}:#{pane_height}:#{scroll_position}:#{window_zoomed_flag}:#{pane_width}",
     ]);
     let f: Vec<&str> = info.split(':').collect();
     let pane = f[0].to_string();
@@ -47,6 +47,7 @@ fn orchestrate() {
     let height: i32 = f.get(2).and_then(|v| v.parse().ok()).unwrap_or(0);
     let scroll: i32 = f.get(3).and_then(|v| v.parse().ok()).unwrap_or(0);
     let zoomed = f.get(4).is_some_and(|v| *v == "1");
+    let width: i32 = f.get(5).and_then(|v| v.parse().ok()).unwrap_or(0);
 
     // Capture the visible region (following scrollback if the pane is scrolled).
     let mut cap: Vec<String> = ["capture-pane", "-t", &pane, "-p"].map(String::from).into();
@@ -128,6 +129,20 @@ fn orchestrate() {
     nw.push(pane_command);
     let nw_refs: Vec<&str> = nw.iter().map(String::as_str).collect();
     let flash_pane = tmux(&nw_refs);
+    // Size the helper window to the target pane before swapping: in a split,
+    // swapping into a full-size window resizes the real pane, which rewraps
+    // long lines and perturbs the scroll position.
+    if width > 0 && height > 0 {
+        tmux(&[
+            "resize-window",
+            "-t",
+            &flash_pane,
+            "-x",
+            &width.to_string(),
+            "-y",
+            &height.to_string(),
+        ]);
+    }
     tmux(&["swap-pane", "-d", "-s", &pane, "-t", &flash_pane]);
     if zoomed {
         tmux(&["resize-pane", "-t", &flash_pane, "-Z"]);
