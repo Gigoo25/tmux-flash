@@ -23,4 +23,4 @@ if [ -z "${bin}" ]; then
 fi
 
 # -b so the keybind returns while the UI runs in the swapped-in pane.
-tmux bind-key "${key}" run-shell -b "${bin}"
+tmux bind-key -N "Flash jump to a typed word" "${key}" run-shell -b "${bin}"
