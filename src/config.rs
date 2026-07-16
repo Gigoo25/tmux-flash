@@ -52,7 +52,7 @@ impl Config {
 
         Config {
             labels,
-            autojump: !matches!(get("TMUX_FLASH_AUTOJUMP").as_str(), "0" | "off" | "false"),
+            autojump: matches!(get("TMUX_FLASH_AUTOJUMP").as_str(), "1" | "on" | "true"),
             min_pattern_length: get("TMUX_FLASH_MIN_PATTERN_LENGTH").parse().unwrap_or(0),
             label_fg: color("TMUX_FLASH_LABEL_FG", Color::Black),
             label_bg: color("TMUX_FLASH_LABEL_BG", Color::Red),
