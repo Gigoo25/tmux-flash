@@ -52,7 +52,7 @@ fn event_loop(out: &mut impl Write, grid: &[Vec<char>], cfg: &Config) -> Option<
         if query.len() >= cfg.min_pattern_length.max(1) {
             matches = assign_labels(grid, matches, &cfg.labels);
         }
-        draw(out, grid, &matches, &query, &pending, cfg);
+        draw(out, grid, &matches, &pending, cfg);
 
         let ev = match read() {
             Ok(Event::Key(k)) if k.kind == KeyEventKind::Press => k,
@@ -104,14 +104,7 @@ fn event_loop(out: &mut impl Write, grid: &[Vec<char>], cfg: &Config) -> Option<
     }
 }
 
-fn draw(
-    out: &mut impl Write,
-    grid: &[Vec<char>],
-    matches: &[Match],
-    query: &[char],
-    pending: &str,
-    cfg: &Config,
-) {
+fn draw(out: &mut impl Write, grid: &[Vec<char>], matches: &[Match], pending: &str, cfg: &Config) {
     queue!(out, Clear(ClearType::All)).ok();
 
     for (row, chars) in grid.iter().enumerate() {
@@ -157,18 +150,6 @@ fn draw(
             }
         }
     }
-
-    // Query echo, bottom-left.
-    let rows = grid.len().max(1) as u16;
-    let q: String = query.iter().collect();
-    queue!(
-        out,
-        MoveTo(0, rows.saturating_sub(1)),
-        SetForegroundColor(cfg.query_fg),
-        Print(format!("/{}", q)),
-        ResetColor
-    )
-    .ok();
 
     out.flush().ok();
 }

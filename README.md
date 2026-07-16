@@ -85,7 +85,6 @@ Set as tmux user options (`set -g @flash-… value`). Colors accept `#rrggbb`,
 | `@flash-match-fg` | `white` | match highlight |
 | `@flash-current-fg` | `green` | first match (the `Enter` target) |
 | `@flash-backdrop-fg` | `darkgrey` | dimmed pane text |
-| `@flash-query-fg` | `yellow` | typed-query echo |
 
 ## Limitations
 

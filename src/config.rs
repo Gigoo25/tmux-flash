@@ -11,7 +11,6 @@ pub struct Config {
     pub match_fg: Color,
     pub current_fg: Color,
     pub backdrop_fg: Color,
-    pub query_fg: Color,
 }
 
 pub const DEFAULT_LABELS: &str = "asdfjklghqwertyuiopzxcvbnm";
@@ -28,7 +27,6 @@ pub const OPTIONS: &[(&str, &str)] = &[
     ("@flash-match-fg", "TMUX_FLASH_MATCH_FG"),
     ("@flash-current-fg", "TMUX_FLASH_CURRENT_FG"),
     ("@flash-backdrop-fg", "TMUX_FLASH_BACKDROP_FG"),
-    ("@flash-query-fg", "TMUX_FLASH_QUERY_FG"),
 ];
 
 impl Config {
@@ -59,7 +57,6 @@ impl Config {
             match_fg: color("TMUX_FLASH_MATCH_FG", Color::White),
             current_fg: color("TMUX_FLASH_CURRENT_FG", Color::Green),
             backdrop_fg: color("TMUX_FLASH_BACKDROP_FG", Color::DarkGrey),
-            query_fg: color("TMUX_FLASH_QUERY_FG", Color::Yellow),
         }
     }
 }
