@@ -153,7 +153,6 @@ fn parse_target(s: &str) -> Option<(u32, u32)> {
 fn jump(pane: &str, row: u32, col: u32) {
     tmux(&["copy-mode", "-t", pane]);
     tmux(&["send-keys", "-X", "-t", pane, "top-line"]);
-    tmux(&["send-keys", "-X", "-t", pane, "start-of-line"]);
     if row > 0 {
         tmux(&[
             "send-keys",
@@ -165,6 +164,10 @@ fn jump(pane: &str, row: u32, col: u32) {
             "cursor-down",
         ]);
     }
+    // start-of-line must run on the target line: on an empty top line it
+    // doesn't reset copy-mode's remembered column, and cursor-down then
+    // restores it, after which cursor-right wraps to the wrong row.
+    tmux(&["send-keys", "-X", "-t", pane, "start-of-line"]);
     if col > 0 {
         tmux(&[
             "send-keys",

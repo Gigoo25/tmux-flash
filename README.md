@@ -79,7 +79,7 @@ Set as tmux user options (`set -g @flash-… value`). Colors accept `#rrggbb`,
 | `@flash-key` | `j` | prefix key the TPM script binds (TPM install only) |
 | `@flash-labels` | `asdfjklghqwertyuiopzxcvbnm` | label alphabet, in preference order |
 | `@flash-label-exclude` | _(empty)_ | characters to remove from the label alphabet |
-| `@flash-autojump` | `0` | jump immediately when only one match remains (`1`/`on`/`true`) |
+| `@flash-autojump` | `1` | jump immediately when only one match remains (disable with `0`/`off`/`false`) |
 | `@flash-min-pattern-length` | `0` | don't show labels until the query is this long |
 | `@flash-label-fg` / `@flash-label-bg` | `black` / `red` | label colors |
 | `@flash-match-fg` | `white` | match highlight |
